@@ -29,7 +29,7 @@ public class InsertarCaracteristicas extends javax.swing.JFrame {
         initComponents();
     }
     
-     public void abrir() throws IOException {
+     public void abrirIndividuos() throws IOException {
       String textu="";
         JFileChooser JFC = new JFileChooser();
         JFC.setFileFilter(new FileNameExtensionFilter("All files *.gt", "gt","gt"));
@@ -64,6 +64,71 @@ public class InsertarCaracteristicas extends javax.swing.JFrame {
                         ArrayList individuo = new ArrayList();
                         for(int i = 0; i < personas.length ; i++){
                             individuo.add(personas[i].split(","));
+                        }
+                        
+                        //jTextPane_Code.setText(textu);
+                    }
+                    
+                }else{
+                    JOptionPane.showMessageDialog(this, "Not supported file","Error", JOptionPane.ERROR_MESSAGE);
+                    open();
+                }
+
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                //Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
+            //cerramos el fichero, para asegurar que se cierra tanto
+            // si todo va bien si salta una excepcion
+            } finally {
+                try {
+                    if(null!= FR){
+                        FR.close();
+                    }
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                 //   Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+    }
+     
+     public void abrirCaracteristicas() throws IOException {
+      String textu="";
+        JFileChooser JFC = new JFileChooser();
+        JFC.setFileFilter(new FileNameExtensionFilter("All files *.cgt", "cgt","cgt"));
+        int abrir = JFC.showDialog(null, "Open");
+        if (abrir == JFileChooser.APPROVE_OPTION) {
+            FileReader FR = null;
+            BufferedReader BR = null;
+            try {
+                File archivo = JFC.getSelectedFile();
+                
+                //jLabel8.setText(archivo.getName());
+                
+                String PATH = JFC.getSelectedFile().getAbsolutePath();
+                if(PATH.endsWith(".cgt")||PATH.endsWith(".cgt")){
+                    FR = new FileReader(archivo);
+                    BR = new BufferedReader(FR);
+                    String linea;
+                    if(pathAbrir.compareTo(archivo.getAbsolutePath())==0){
+                        JOptionPane.showMessageDialog(this, "File opened","Error", JOptionPane.ERROR_MESSAGE);
+                    }else{
+                        pathAbrir = archivo.getAbsolutePath();
+                        
+                        //jTextPane_Code.setText(null);
+                        while((linea=BR.readLine())!=null){
+                            textu=textu+linea+"\n";
+                            //jTextPane_Code.setText(linea+"\n");
+                        }
+                        
+                        /*Agregado. aja aja nome zale*/
+                        String[] caracteristicas = textu.split("|");
+                        
+                        ArrayList caracteristica = new ArrayList();
+                        for(int i = 0; i < caracteristicas.length ; i++){
+                            caracteristica.add(caracteristicas[i].split(","));
                         }
                         
                         //jTextPane_Code.setText(textu);
