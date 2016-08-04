@@ -1,3 +1,15 @@
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import static java.nio.channels.AsynchronousServerSocketChannel.open;
+import java.util.ArrayList;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -9,13 +21,79 @@
  * @author Ernesto
  */
 public class InsertarCaracteristicas extends javax.swing.JFrame {
-
+    String pathAbrir = "";
     /**
      * Creates new form InsertarCaracteristicas
      */
     public InsertarCaracteristicas() {
         initComponents();
     }
+    
+     public void abrir() throws IOException {
+      String textu="";
+        JFileChooser JFC = new JFileChooser();
+        JFC.setFileFilter(new FileNameExtensionFilter("All files *.gt", "gt","gt"));
+        int abrir = JFC.showDialog(null, "Open");
+        if (abrir == JFileChooser.APPROVE_OPTION) {
+            FileReader FR = null;
+            BufferedReader BR = null;
+            try {
+                File archivo = JFC.getSelectedFile();
+                
+                //jLabel8.setText(archivo.getName());
+                
+                String PATH = JFC.getSelectedFile().getAbsolutePath();
+                if(PATH.endsWith(".gt")||PATH.endsWith(".gt")){
+                    FR = new FileReader(archivo);
+                    BR = new BufferedReader(FR);
+                    String linea;
+                    if(pathAbrir.compareTo(archivo.getAbsolutePath())==0){
+                        JOptionPane.showMessageDialog(this, "File opened","Error", JOptionPane.ERROR_MESSAGE);
+                    }else{
+                        pathAbrir = archivo.getAbsolutePath();
+                        
+                        //jTextPane_Code.setText(null);
+                        while((linea=BR.readLine())!=null){
+                            textu=textu+linea+"\n";
+                            //jTextPane_Code.setText(linea+"\n");
+                        }
+                        
+                        /*Agregado. aja aja nome zale*/
+                        String[] personas = textu.split("|");
+                        
+                        ArrayList individuo = new ArrayList();
+                        for(int i = 0; i < personas.length ; i++){
+                            individuo.add(personas[i].split(","));
+                        }
+                        
+                        //jTextPane_Code.setText(textu);
+                    }
+                    
+                }else{
+                    JOptionPane.showMessageDialog(this, "Not supported file","Error", JOptionPane.ERROR_MESSAGE);
+                    open();
+                }
+
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+                //Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
+            //cerramos el fichero, para asegurar que se cierra tanto
+            // si todo va bien si salta una excepcion
+            } finally {
+                try {
+                    if(null!= FR){
+                        FR.close();
+                    }
+
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                 //   Logger.getLogger(fileChooser.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
