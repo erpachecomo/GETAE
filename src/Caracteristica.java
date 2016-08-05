@@ -9,5 +9,10 @@
  * @author Ernesto
  */
 public class Caracteristica {
-    
+    String nombre;
+    int maximo;
+    public Caracteristica(String nombre, int maximo){
+        this.nombre = nombre;
+        this.maximo = maximo;
+    }
 }
