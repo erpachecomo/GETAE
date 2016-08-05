@@ -9,5 +9,12 @@
  * @author Ernesto
  */
 public class Individuo {
-    
+    int valoresCaracteristicas[];
+    int grupo;
+    String nombre;
+    public Individuo(String nombre, int numeroCaracteristicas){
+        this.nombre = nombre;
+        grupo = 0;
+        valoresCaracteristicas = new int[numeroCaracteristicas];
+    }
 }
